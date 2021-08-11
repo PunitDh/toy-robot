@@ -1,5 +1,14 @@
 # Robot Challenge
 
+## How to Run the Application
+
+- You need to have Ruby and the `bundler` gem install to run the application.
+- For Linux, use the commands `sudo apt install ruby-full` and `sudo apt install ruby-bundler` to install the applications
+- Navigate to the directory where the application is saved, and run `bundle install`. This will install the `rspec` gem.
+- To run the application, simply run command `./bin/toy-robot`
+- You may need to modify permissions to run the program using `chmod u+x ./bin/toy-robot`
+- To run the tests associated with the application, run `rspec`
+
 ## Description
 
 - The application is a simulation of a toy robot moving on a square tabletop, of dimensions 5 units x 5 units.

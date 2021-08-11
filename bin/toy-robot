@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/ToyRobot"
+require_relative "../lib/helper"
+require_relative "../lib/commands"
+
+rows = Helper::is_valid_grid_size?(ARGV[0]) ? ARGV[0].to_i : DEFAULT_GRID_ROWS
+cols = Helper::is_valid_grid_size?(ARGV[1]) ? ARGV[1].to_i : DEFAULT_GRID_COLUMNS
+enable_visual = (Commands::cli_arguments.include? ARGV[2]) ? true : DEFAULT_ENABLE_VISUAL
+
+toyrobot = ToyRobot.new(rows: rows, cols: cols, enable_visual: enable_visual)
+
+toyrobot.start
