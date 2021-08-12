@@ -70,10 +70,11 @@ The following commands can be given to the application:
 - The commands must be given in the format described above. Each command must be on a separate line.
 - If the file does not exist, the application will display an error message and exit
 
-## Testing
-- The application has been tested using Rspec
+## Testing and Error Handling
+- The application has been tested using `Rspec`
 - Both integration and unit tests have been written and performed
 - To run all tests, simply run `rspec` in the command line from the application root directory
+- Error handling using `rescue` operations have been written in several places. However, if any unexpected errors occur, please contact the developers.
 - If any unexpected problems occur, please contact the developer of this application
 
 
