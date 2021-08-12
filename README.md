@@ -11,19 +11,23 @@
 - You may need to modify permissions to run the program using `chmod u+x ./bin/toyrobot`
 - To run the tests associated with the application, run `rspec`
 
-## Application arguments
+## Application ARGV Arguments
+- You can also run the application with `ARGV` arguments.
+- The three valid arguments are: `grid`, `file`, and `visual`
 - To run the application using default values, simply run `./bin/toyrobot`
-- You can also run the application with `ARGV` arguments. The three valid arguments are: `grid`, `file`, and `visual`
-  - For example, running the application with `./bin/toyrobot grid=5,5` will initialize a 5x5 grid
+- The default config values can be found in the file `config/environment.rb`
+- To run the application using ARGV arguments
+  - Running the application with `./bin/toyrobot grid=5,5` will initialize a 5x5 grid
   - Running the application with `./bin/toyrobot grid=4,6` will initialize a 4x6 grid
   - Running the application with `./bin/toyrobot visual` will initialize the default 5x5 grid and enable a visual representation
-  - Running the application with `./bin/toyrobot file=test.txt` will run the program with command input from the file `test.txt`. **Note:** The file must be in the root directory
+  - Running the application with `./bin/toyrobot file=test.txt` will run the program with command input from the file `test.txt`. 
+
+    **Note:** The file must be placed in the root directory
   - You can also run the application with any, all or no arguments. For example, `./bin/toyrobot grid=5x5 visual file=test.txt` will initialize the application with a 5x5 grid, enable visuals and take in commands from a file input
-  - You can modify certain default config values in `config/environment.rb`
 
 ## Commands
 The following commands can be given to the application:
-- `PLACE`: The PLACE command takes in 3 arguments: x,y,f which correspond to the x,y, positions on the grid (starting with 0,0 on the bottom left), and "f" which refers to "facing". The robot can face "NORTH", "SOUTH", "EAST" or "WEST". For example, `PLACE 1,1,NORTH` will place the robot in the grid position 1,1 facing north
+- `PLACE`: The PLACE command takes in 3 arguments: x,y,f which correspond to the x,y, positions on the grid (starting with 0,0 on the bottom left), and "f" which refers to "facing". The robot can face "NORTH", "SOUTH", "EAST" or "WEST". For example, `PLACE 1,2,NORTH` will place the robot in the grid position 1,2 facing north
   ```
   > Command: PLACE 1,2,north
   Robot has been placed at position 1,2 facing NORTH
