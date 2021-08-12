@@ -45,7 +45,4 @@ describe Commands do
 		expect(place_args_deconstruct("1,2,NORTH")).to eq(["1","2","NORTH"])
 	end
 
-	it 'should correctly rotate the robot' do
-		expect(rotate(1)).to be_truthy
-	end
 end

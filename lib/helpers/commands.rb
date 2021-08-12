@@ -55,10 +55,10 @@ module Commands
 		}
 	end
 
+  ## The is_valid? method checks if the given command is in the list of approved commands
   def is_valid?(command)
 		command_list.keys.include? command
 	end
-
 
   ## The place_robot method takes arguments related to its position and direction it is facing. It returns either true or false depending on whether
   ## it succeeded or failed in placing the robot

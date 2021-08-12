@@ -19,9 +19,52 @@
   - You can also run the application with any, all or no arguments. For example, `./bin/toyrobot grid=5x5 visual file=test.txt` will initialize the application with a 5x5 grid, enable visuals and take in commands from a file input
   - You can modify certain default config values in `config/environment.rb`
 
+## Commands
+The following commands can be given to the application:
+- `PLACE`: The PLACE command takes in 3 arguments: x,y,f which correspond to the x,y, positions on the grid (starting with 0,0 on the bottom left), and "f" which refers to "facing". The robot can face "NORTH", "SOUTH", "EAST" or "WEST". For example, `PLACE 1,1,NORTH` will place the robot in the grid position 1,1 facing north
+  ```
+  > Command: PLACE 1,2,north
+  Robot has been placed at position 1,2 facing NORTH
+  ```
+- `MOVE`: MOVE will move the robot in the direction it is facing. If it reaches the edge of the board, it will be unable to move further.
+  ```
+  > Command: MOVE
+  Robot has moved 1 step NORTH and is at position 1,3
+  ```
+- `LEFT` and `RIGHT`: The LEFT and RIGHT commands will rotate the robot either to the left or right. If the direction is NORTH, LEFT will face the robot to the WEST, while RIGHT will face the robot to the EAST.
+  ```
+  > Command: RIGHT
+  Robot is now facing EAST
+  ```
+- `REPORT`: REPORT will print out the current position and direction of the robot.
+  ```
+  > Command: REPORT
+  Robot is currently at position 1,4 facing EAST
+  ```
+- `SHOW`: The SHOW command will show a visual representation of the grid that the robot is placed in.
+  ```
+  > Command: show
+  You entered: SHOW
+
+  ┌──┬──┬──┬──┬──┐
+  │  │  │  │  │  │
+  ├──┼──┼──┼──┼──┤
+  │  │  │  │  │  │
+  ├──┼──┼──┼──┼──┤
+  │  │  │  │  │  │
+  ├──┼──┼──┼──┼──┤
+  │  │🤖│  │  │  │
+  ├──┼──┼──┼──┼──┤
+  │  │  │  │  │  │
+  └──┴──┴──┴──┴──┘
+
+  ```
+- `EXIT`: EXIT will exit the program
+
 ## Testing
 - The application has been tested using Rspec
 - Both integration and unit tests have been written and performed
+- To run all tests, simply run `rspec` in the command line from the application root directory
 - If any unexpected problems occur, please contact the developer of this application
 
 ## Description

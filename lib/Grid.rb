@@ -30,31 +30,6 @@ class Grid
     end
   end
 
-  def handle_cli_input
-    while true
-      print "\nEnter command: "
-      command = $stdin.gets.chomp.upcase.split(" ")
-      print "You entered: #{command.join(' ')}\n"
-      execute_command(command)
-      puts @enable_visual ? "\n" + Renderer::render_table(Renderer::create_visual_table(@grid)) + "\n" : nil
-    end
-  end
-
-  def handle_file_input
-    begin
-      file = File.open(@filename)
-    rescue StandardError
-      puts "The file is either missing or in an invalid format. Please check the file and ensure all commands are in the proper format."
-      exit
-    end
-
-    File.foreach(file) do |line|
-      puts "\nCommand: #{line}"
-      execute_command(line.upcase.split(" "))
-    end
-    file.close
-  end
-
   ## The execute command function uses an error handling system to execute commands entered in
   def execute_command(command)
     begin
@@ -64,4 +39,30 @@ class Grid
       exit
     end
   end
+
+  private
+    def handle_cli_input
+      while true
+        print "\nEnter command: "
+        command = $stdin.gets.chomp.upcase.split(" ")
+        print "You entered: #{command.join(' ')}\n"
+        execute_command(command)
+        puts @enable_visual ? "\n" + Renderer::render_table(Renderer::create_visual_table(@grid)) + "\n" : nil
+      end
+    end
+
+    def handle_file_input
+      begin
+        file = File.open(@filename)
+      rescue StandardError
+        puts "The file is either missing or in an invalid format. Please check the file and ensure all commands are in the proper format."
+        exit
+      end
+
+      File.foreach(file) do |line|
+        puts "\nCommand: #{line}"
+        execute_command(line.upcase.split(" "))
+      end
+      file.close
+    end
 end
