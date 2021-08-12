@@ -2,7 +2,7 @@ require_relative "../lib/Grid"
 require_relative "../lib/Robot"
 
 
-describe Robot do
+describe Grid do
 	grid = Grid.new(rows: 5, cols: 5, enable_visual: false, input: :cli, filename: nil)
 
 	it 'should create an empty 5x5 grid' do
@@ -49,4 +49,11 @@ describe Robot do
 		grid.place(0,0,"WEST")
 		expect { grid.move }.to output("ERROR: Unable to move any further").to_stdout
 	end
+
+	it 'should correctly check if the robot can be placed at a position' do
+		grid.place(0,0,"NORTH")
+		expect(grid.can_be_placed?(0,0)).to be(true)
+	end
+
+	
 end

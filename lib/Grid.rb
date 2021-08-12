@@ -5,6 +5,7 @@ class Grid
   include Commands
 
   attr_reader :grid
+  attr_accessor :robot
 
 	def initialize(rows: nil, cols: nil, enable_visual: false, input: nil, filename: nil)
     return false if (rows.nil? or cols.nil? or input.nil?)

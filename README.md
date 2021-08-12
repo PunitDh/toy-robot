@@ -10,7 +10,19 @@
 - To run the tests associated with the application, run `rspec`
 
 ## Application arguments
-- To run the application using default values, simply run "./bin/toyrobot
+- To run the application using default values, simply run `./bin/toyrobot`
+- You can also run the application with `ARGV` arguments. The three valid arguments are: `grid`, `file`, and `visual`
+  - For example, running the application with `./bin/toyrobot grid=5,5` will initialize a 5x5 grid
+  - Running the application with `./bin/toyrobot grid=4,6` will initialize a 4x6 grid
+  - Running the application with `./bin/toyrobot visual` will initialize the default 5x5 grid and enable a visual representation
+  - Running the application with `./bin/toyrobot file=test.txt` will run the program with command input from the file `test.txt`. **Note:** The file must be in the root directory
+  - You can also run the application with any, all or no arguments. For example, `./bin/toyrobot grid=5x5 visual file=test.txt` will initialize the application with a 5x5 grid, enable visuals and take in commands from a file input
+  - You can modify certain default config values in `config/environment.rb`
+
+## Testing
+- The application has been tested using Rspec
+- Both integration and unit tests have been written and performed
+- If any unexpected problems occur, please contact the developer of this application
 
 ## Description
 

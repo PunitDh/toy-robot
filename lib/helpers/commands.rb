@@ -12,29 +12,34 @@ module Commands
     }
 	end
 
-	def self.cli_arguments
+	def self.argvs
 		%w(grid visual file)
 	end
 
-  def self.check_argvs(argvs)
-    arg_commands = { rows: DEFAULT_GRID_ROWS, cols: DEFAULT_GRID_COLUMNS, visual: DEFAULT_ENABLE_VISUAL, input: DEFAULT_INPUT, filename: nil }
-    argvs.each do |arg|
+  def self.check_argvs(argv)
+    app_params = { rows: DEFAULT_GRID_ROWS, cols: DEFAULT_GRID_COLUMNS, visual: DEFAULT_ENABLE_VISUAL, input: DEFAULT_INPUT, filename: nil }
+    argv.each do |arg|
+      
       param = arg.split("=")
-      if param[0] == cli_arguments[0]
+
+      if param[0] == argvs[0]
         grid_size = param[1].split(",")
         if Helper::is_valid_grid_size?(grid_size[0]) and Helper::is_valid_grid_size?(grid_size[1])
-          arg_commands[:rows] = grid_size[0].to_i
-          arg_commands[:cols] = grid_size[1].to_i
+          app_params[:rows] = grid_size[0].to_i
+          app_params[:cols] = grid_size[1].to_i
         end
-      elsif param[0] == cli_arguments[1]
-        arg_commands[:visual] = true
-      elsif param[0] == cli_arguments[2]
-        arg_commands[:input] = :file
-        arg_commands[:filename] = param[1]
+      
+      elsif param[0] == argvs[1]
+        app_params[:visual] = true
+      
+      elsif param[0] == argvs[2]
+        app_params[:input] = :file
+        app_params[:filename] = param[1]
       end
+
     end
 
-    return arg_commands
+    return app_params
   end
 
   ## The commands method is a hash of values with lambda functions attached to each. This makes it easier to add new commands to the program.
@@ -42,8 +47,8 @@ module Commands
 		{
 			"PLACE"  => lambda{ |*command| place_robot(command) },
 			"MOVE"   => lambda{ |*command| if_has_been_placed_then { move } },
-			"LEFT"   => lambda{ |*command| if_has_been_placed_then { rotate(1) } },
-			"RIGHT"  => lambda{ |*command| if_has_been_placed_then { rotate(-1) } },
+			"LEFT"   => lambda{ |*command| if_has_been_placed_then { @robot.f = rotate(1) } },
+			"RIGHT"  => lambda{ |*command| if_has_been_placed_then { @robot.f = rotate(-1) } },
 			"REPORT" => lambda{ |*command| if_has_been_placed_then { print_report } },
 			"EXIT"   => lambda{ |*command| print "Goodbye."; exit },
 			"SHOW"   => lambda{ |*command| print "\n" + Renderer::render_table(Renderer::create_visual_table(@grid)) + "\n" }
@@ -112,7 +117,7 @@ module Commands
 
   ## Depending on the direction, move the robot if it is a valid move
   def move
-    move_if_valid(@robot.y + directions[@robot.f][0], @robot.x + directions[@robot.f][1], @robot)
+    return move_if_valid(@robot.y + directions[@robot.f][0], @robot.x + directions[@robot.f][1], @robot)
   end
 
   ## If it is a valid move, move the robot, or else print an error
@@ -145,19 +150,17 @@ module Commands
       current_dir += dir
     end
 
-    @robot.f = dirs[current_dir]
-
-    # print @robot.f + " " + current_dir.to_s
-    puts "Robot is now facing #{@robot.f}\n"
+    puts "Robot is now facing #{dirs[current_dir]}\n"
+    return dirs[current_dir]
   end
 
   ## The setcoords function clears the previous x,y positions, records new positions and places the given object
   def set_coords(y,x,obj)
-    @grid[@robot.prev_y][@robot.prev_x] = nil unless (@robot.prev_y.nil? and @robot.prev_x.nil?)
-    @robot.x = x
-    @robot.y = y
-    @robot.prev_x = x
-    @robot.prev_y = y
+    @grid[obj.prev_y][obj.prev_x] = nil unless (obj.prev_y.nil? and obj.prev_x.nil?)
+    obj.x = x
+    obj.y = y
+    obj.prev_x = x
+    obj.prev_y = y
     @grid[y][x] = obj
   end
 end
