@@ -36,11 +36,7 @@ describe Commands do
 		expect(place_args_valid?(nil)).to be_falsey
 		expect(place_args_valid?(nil)).to be_falsey
 	end
-
-	it 'should correctly place robot in a given location' do
-		expect(place_robot([["PLACE", "1,2,EAST"]])).to eq(true)
-	end
-
+	
 	it 'should correctly deconstruct PLACE arguments' do
 		expect(place_args_deconstruct("1,2,NORTH")).to eq(["1","2","NORTH"])
 	end

@@ -1,5 +1,7 @@
 # Robot Challenge
 
+
+
 ## How to Run the Application
 
 - You need to have Ruby and the `bundler` gem install to run the application.
@@ -61,11 +63,19 @@ The following commands can be given to the application:
   ```
 - `EXIT`: EXIT will exit the program
 
+## File Input
+- Commands can be given to the application through a file input
+- Running `./bin/toyrobot file=test.txt` will run all commands in the file `test.txt`
+- The file must be placed in the root directory
+- The commands must be given in the format described above. Each command must be on a separate line.
+- If the file does not exist, the application will display an error message and exit
+
 ## Testing
 - The application has been tested using Rspec
 - Both integration and unit tests have been written and performed
 - To run all tests, simply run `rspec` in the command line from the application root directory
 - If any unexpected problems occur, please contact the developer of this application
+
 
 ## Description
 
