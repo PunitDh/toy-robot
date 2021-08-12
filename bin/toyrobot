@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/Robot"
+require_relative "../lib/helpers/helper"
+require_relative "../lib/helpers/commands"
+require_relative "../lib/Grid"
+
+args = Commands::check_argvs(ARGV)
+
+if (args.include? "file")
+	if args[:filename].nil?
+		puts "ERROR: `file` argument found but no filename was given"
+		exit
+  end
+  
+  if not File.file?(args[:filename])
+    puts "ERROR: Could not open such file: #{args[:filename]}"
+    exit
+  end
+end
+
+grid = Grid.new(rows: args[:rows], cols: args[:cols], enable_visual: args[:visual], input: args[:input], filename: args[:filename])
+
+begin
+	grid.start_simulation
+rescue StandardError
+	puts "ERROR: An unexpected error has occured with the application. Please contact the developer."
+	exit
+end

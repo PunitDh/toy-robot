@@ -1,0 +1,163 @@
+require_relative "./helper"
+require_relative "../../config/environment.rb"
+
+module Commands
+
+  def directions
+		{ 
+      "NORTH" => [-1,  0],
+      "WEST"  => [ 0, -1],
+      "SOUTH" => [ 1,  0],
+      "EAST"  => [ 0,  1]
+    }
+	end
+
+	def self.cli_arguments
+		%w(grid visual file)
+	end
+
+  def self.check_argvs(argvs)
+    arg_commands = { rows: DEFAULT_GRID_ROWS, cols: DEFAULT_GRID_COLUMNS, visual: DEFAULT_ENABLE_VISUAL, input: DEFAULT_INPUT, filename: nil }
+    argvs.each do |arg|
+      param = arg.split("=")
+      if param[0] == cli_arguments[0]
+        grid_size = param[1].split(",")
+        if Helper::is_valid_grid_size?(grid_size[0]) and Helper::is_valid_grid_size?(grid_size[1])
+          arg_commands[:rows] = grid_size[0].to_i
+          arg_commands[:cols] = grid_size[1].to_i
+        end
+      elsif param[0] == cli_arguments[1]
+        arg_commands[:visual] = true
+      elsif param[0] == cli_arguments[2]
+        arg_commands[:input] = :file
+        arg_commands[:filename] = param[1]
+      end
+    end
+
+    return arg_commands
+  end
+
+  ## The commands method is a hash of values with lambda functions attached to each. This makes it easier to add new commands to the program.
+  def command_list
+		{
+			"PLACE"  => lambda{ |*command| place_robot(command) },
+			"MOVE"   => lambda{ |*command| if_has_been_placed_then { move } },
+			"LEFT"   => lambda{ |*command| if_has_been_placed_then { rotate(1) } },
+			"RIGHT"  => lambda{ |*command| if_has_been_placed_then { rotate(-1) } },
+			"REPORT" => lambda{ |*command| if_has_been_placed_then { print_report } },
+			"EXIT"   => lambda{ |*command| print "Goodbye."; exit },
+			"SHOW"   => lambda{ |*command| print "\n" + Renderer::render_table(Renderer::create_visual_table(@grid)) + "\n" }
+		}
+	end
+
+  def is_valid?(command)
+		command_list.keys.include? command
+	end
+
+
+  ## The place_robot method takes arguments related to its position and direction it is facing. It returns either true or false depending on whether
+  ## it succeeded or failed in placing the robot
+  def place_robot(place_arg)
+    if place_args_valid?(place_arg.first[1])
+      args = place_args_deconstruct(place_arg.first[1])
+      if can_be_placed?(args[0].to_i, args[1].to_i)
+        @robot = place(args[0].to_i, args[1].to_i, args[2])
+        return true
+      else
+        print "ERROR: Robot cannot be placed at position #{args[0]}, #{args[1]}"
+        return false
+      end
+    else
+      print "\nInvalid PLACE arguments\n"
+      return false
+    end
+  end
+
+  ## The print_report method prints out where the robot currently is and which way it is facing
+  def print_report
+    puts "Robot is currently at position #{report[0]},#{@rows-1-report[1]} facing #{@robot.f}"
+  end
+
+  ## Check if PLACE arguments are valid arguments
+  def place_args_valid?(args)
+    return false if args.nil?
+    args = place_args_deconstruct(args)
+    Helper::is_i?(args[0]) and Helper::is_i?(args[1]) and directions.include?(args[2])
+  end
+
+  ## Deconstruct PLACE arguments and return as an array
+  def place_args_deconstruct(args)
+    args.delete(' ').split(",")
+  end
+
+  ## Check if the robot can be placed at a particular position
+  def can_be_placed?(arg0, arg1)
+    return false if (arg0 < 0 or arg0 >= @rows or arg1 < 0 or arg1 >= @cols)
+    return true
+  end
+
+  ## Place the robot at given position and direction
+  def place(x, y, f)
+    @robot ? @grid[@robot.prev_y][@robot.prev_x] = nil : nil
+    @robot = Robot.new(x: x, y: y, f: f)
+    set_coords(@rows - 1 - @robot.y, @robot.x, @robot)
+    print ("Robot has been placed at position #{x},#{y} facing #{f}")
+    return @robot
+	end
+
+  ## Check if placed, then execute the code block given to it
+  def if_has_been_placed_then
+    @robot.nil? ? print("ERROR: Robot has not been placed yet. Please place the robot first using the PLACE command.") : yield
+  end
+
+  ## Depending on the direction, move the robot if it is a valid move
+  def move
+    move_if_valid(@robot.y + directions[@robot.f][0], @robot.x + directions[@robot.f][1], @robot)
+  end
+
+  ## If it is a valid move, move the robot, or else print an error
+  def move_if_valid(y, x, obj)
+    if can_be_placed?(y,x)
+      set_coords(y,x,obj)
+      print("Robot has moved 1 step #{@robot.f} and is at position #{x},#{@rows-1-y}")
+      return true
+    else
+      print("ERROR: Unable to move any further")
+      return false
+    end
+  end
+
+  ## Return the current coordinates and direction
+  def report
+    [@robot.x, @robot.y, @robot.f]
+  end
+
+  ## Rotate the robot
+  def rotate(dir)
+    dirs = directions.keys
+    current_dir = dirs.find_index(@robot.f)
+
+    if current_dir + dir > (dirs.length - 1)
+      current_dir = 0
+    elsif current_dir + dir < 0
+      current_dir = (dirs.length - 1)
+    else
+      current_dir += dir
+    end
+
+    @robot.f = dirs[current_dir]
+
+    # print @robot.f + " " + current_dir.to_s
+    puts "Robot is now facing #{@robot.f}\n"
+  end
+
+  ## The setcoords function clears the previous x,y positions, records new positions and places the given object
+  def set_coords(y,x,obj)
+    @grid[@robot.prev_y][@robot.prev_x] = nil unless (@robot.prev_y.nil? and @robot.prev_x.nil?)
+    @robot.x = x
+    @robot.y = y
+    @robot.prev_x = x
+    @robot.prev_y = y
+    @grid[y][x] = obj
+  end
+end

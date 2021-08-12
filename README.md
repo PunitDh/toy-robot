@@ -5,9 +5,12 @@
 - You need to have Ruby and the `bundler` gem install to run the application.
 - For Linux, use the commands `sudo apt install ruby-full` and `sudo apt install ruby-bundler` to install the applications
 - Navigate to the directory where the application is saved, and run `bundle install`. This will install the `rspec` gem.
-- To run the application, simply run command `./bin/toy-robot`
-- You may need to modify permissions to run the program using `chmod u+x ./bin/toy-robot`
+- To run the application, simply run command `./bin/toyrobot`
+- You may need to modify permissions to run the program using `chmod u+x ./bin/toyrobot`
 - To run the tests associated with the application, run `rspec`
+
+## Application arguments
+- To run the application using default values, simply run "./bin/toyrobot
 
 ## Description
 
