@@ -62,6 +62,7 @@ class Grid
       File.foreach(file) do |line|
         puts "\nCommand: #{line}"
         execute_command(line.upcase.split(" "))
+        puts @enable_visual ? "\n" + Renderer::render_table(Renderer::create_visual_table(@grid)) + "\n" : nil
       end
       file.close
     end
