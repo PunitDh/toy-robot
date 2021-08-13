@@ -24,7 +24,7 @@ module Commands
 
       if param[0] == argvs[0]
         if (param[1].nil?)
-          puts "ERROR: `#{argvs[0]}` argument found but no grid size was specified."
+          puts "ERROR: `#{argvs[0]}` argument found but a valid grid size was not specified."
           exit
         else
           grid_size = param[1].split(",")
