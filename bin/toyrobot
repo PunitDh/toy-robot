@@ -7,7 +7,8 @@ require_relative "../lib/Grid"
 
 args = Commands::check_argvs(ARGV)
 
-if (args.include? "file")
+
+if (ARGV.join.include? "file=")
 	if args[:filename].nil?
 		puts "ERROR: `file` argument found but no filename was given"
 		exit
