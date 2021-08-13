@@ -1,7 +1,5 @@
 # Robot Challenge
 
-
-
 ## How to Run the Application
 
 - You need to have Ruby and the `bundler` gem install to run the application.
@@ -12,7 +10,7 @@
 - To run the tests associated with the application, run `rspec`
 
 ## Application ARGV Arguments
-- You can also run the application with `ARGV` arguments.
+- You can run the application with `ARGV` arguments in the command line, e.g. `./bin/toyrobot grid=5,5`
 - The three valid arguments are: `grid`, `file`, and `visual`
 - To run the application using default values, simply run `./bin/toyrobot`
 - The default config values can be found in the file `config/environment.rb`
@@ -23,7 +21,7 @@
   - Running the application with `./bin/toyrobot file=test.txt` will run the program with command input from the file `test.txt`. 
 
     **Note:** The file must be placed in the root directory
-  - You can also run the application with any, all or no arguments. For example, `./bin/toyrobot grid=5x5 visual file=test.txt` will initialize the application with a 5x5 grid, enable visuals and take in commands from a file input
+  - You can also run the application with any, all or no arguments. For example, `./bin/toyrobot grid=5x5 visual file=test.txt` will initialize the application with a 5x5 grid, enable visuals and take in commands from a file input `test.txt`
 
 ## Commands
 The following commands can be given to the application:
@@ -72,7 +70,7 @@ The following commands can be given to the application:
 - Running `./bin/toyrobot file=test.txt` will run all commands in the file `test.txt`
 - The file must be placed in the root directory
 - The commands must be given in the format described above. Each command must be on a separate line.
-- If the file does not exist, the application will display an error message and exit
+- If the file does not exist or is in an invalid format, the application will display an error message and exit
 
 ## Testing and Error Handling
 - The application has been tested using `Rspec`
