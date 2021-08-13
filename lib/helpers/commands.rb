@@ -23,10 +23,15 @@ module Commands
       param = arg.split("=")
 
       if param[0] == argvs[0]
-        grid_size = param[1].split(",")
-        if Helper::is_valid_grid_size?(grid_size[0]) and Helper::is_valid_grid_size?(grid_size[1])
-          app_params[:rows] = grid_size[0].to_i
-          app_params[:cols] = grid_size[1].to_i
+        if (param[1].nil?)
+          puts "ERROR: `#{argvs[0]}` argument found but no grid size was specified."
+          exit
+        else
+          grid_size = param[1].split(",")
+          if Helper::is_valid_grid_size?(grid_size[0]) and Helper::is_valid_grid_size?(grid_size[1])
+            app_params[:rows] = grid_size[0].to_i
+            app_params[:cols] = grid_size[1].to_i
+          end
         end
       
       elsif param[0] == argvs[1]
